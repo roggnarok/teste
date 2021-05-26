@@ -3,9 +3,9 @@ https://data.world/awram/us-police-involved-fatalities
 https://data.world/awram/us-police-involved-fatalities/workspace/file?filename=Police+Fatalities.csv
 '''
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt
 # Realiza a leitura do arquivo armazenando na variável df (dataframe)
-df = pd.read_csv(r'Desktop\py_programas\testes\policefatal.csv')
+df = pd.read_csv(r'C:\Users\Priscila\Desktop\py_programas\testes\policefatal.csv')
 # Cria um Backup do Data Frame original
 df_backup = df.copy()
 # Converte em maiúscula as strings da coluna "Armed"
@@ -49,9 +49,12 @@ asian_mortes = asian.value_counts()
 nativo_mortes = nativo.value_counts()
 outro_mortes = outro.value_counts()
 
-# First Graphic
-morte_raca_numeros.plot(x = 'Maneira da morte', y = 'Quantidade', kind = 'bar')
-plt.show
+# First Graphic - Tem que ser nessa ordem
+morte_raca_numeros.plot(color='black', kind = 'bar')    
+plt.title("Mortos pela polícia entre 2001 e 2016")      # Define o título
+plt.xlabel("Maneira da Morte / Raça")                   # Define o rótulo do eixo X
+plt.ylabel("Quantidade de mortos")                      # Define o rótulo do eixo Y
+plt.show()                                              # Mostra o gráfico
 
 # VALUE_COUNTS() - Contar a incidência de elementos em uma coluna:
 print(df["Manner_of_death"].value_counts())
