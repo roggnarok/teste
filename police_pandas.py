@@ -51,8 +51,8 @@ outro_mortes = outro.value_counts()
 
 # First Graphic - Tem que ser nessa ordem
 morte_raca_numeros.plot(color='black', kind = 'bar')    
-plt.title("Mortos pela polícia entre 2001 e 2016")      # Define o título
-plt.xlabel("Maneira da Morte / Raça")                   # Define o rótulo do eixo X
+plt.title("Mortos pela polícia nos USA, entre 2001 e 2016")      # Define o título
+plt.xlabel("Maneira da Morte por Raça")                   # Define o rótulo do eixo X
 plt.ylabel("Quantidade de mortos")                      # Define o rótulo do eixo Y
 plt.show()                                              # Mostra o gráfico
 
