@@ -30,7 +30,28 @@ f'A última ocorrência foi em {df["Date"].max()}'
 # DROP() - DELETA as colunas. "Name", "UID", "City", "Flee", "Mental_illness".
 df = df.drop(columns=["Name", "UID", "City", "Flee", "Mental_illness"])
 # Cria um DF somente com as colunas "Race" e "Manner_of_death".
-morte_raca = df.drop(columns=["Age", "Gender", "Date", "State", "Armed"])
+morte_raca = df[["Race", "Manner_of_death"]]
+
+# Grupo por raça. 
+white = morte_raca[morte_raca["Race"] == "White"]
+black = morte_raca[morte_raca["Race"] == "Black"]
+hispanic = morte_raca[morte_raca["Race"] == "Hispanic"]
+asian = morte_raca[morte_raca["Race"] == "Asian"]
+nativo = morte_raca[morte_raca["Race"] == "Native"]
+outro = morte_raca[morte_raca["Race"] == "Other"]
+
+# Valores numéricos sobre a maneira da morte.
+morte_raca_numeros = morte_raca.value_counts()
+black_mortes = black.value_counts()
+white_mortes = white.value_counts()
+hispanic_mortes = hispanic.value_counts()
+asian_mortes = asian.value_counts()
+nativo_mortes = nativo.value_counts()
+outro_mortes = outro.value_counts()
+
+# First Graphic
+morte_raca_numeros.plot(x = 'Maneira da morte', y = 'Quantidade', kind = 'bar')
+plt.show
 
 # VALUE_COUNTS() - Contar a incidência de elementos em uma coluna:
 print(df["Manner_of_death"].value_counts())
