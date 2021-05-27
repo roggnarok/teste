@@ -4,8 +4,9 @@ https://data.world/awram/us-police-involved-fatalities/workspace/file?filename=P
 '''
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 # Realiza a leitura do arquivo armazenando na variável df (dataframe)
-df = pd.read_csv(r'C:\Users\Priscila\Desktop\py_programas\testes\policefatal.csv')
+df = pd.read_csv(r'C:\Users\Priscila\Documents\GitHub\teste\policefatal.csv')
 # Cria um Backup do Data Frame original
 df_backup = df.copy()
 # Converte em maiúscula as strings da coluna "Armed"
@@ -31,6 +32,35 @@ f'A última ocorrência foi em {df["Date"].max()}'
 df = df.drop(columns=["Name", "UID", "City", "Flee", "Mental_illness"])
 # Cria um DF somente com as colunas "Race" e "Manner_of_death".
 morte_raca = df[["Race", "Manner_of_death"]]
+# Faz a limpeza dos valores NaN da coluna Raça. 
+morte_raca = morte_raca.dropna(subset=["Race"])
+
+morte_raca_numeros = morte_raca.value_counts()
+morte_raca_agg_raca = morte_raca.value_counts(subset=["Race"])
+
+morte_raca_numeros.plot.barh()
+morte_raca_agg_raca.plot.barh()
+
+# White, Black, Hispanic
+shot = np.array((3665, 2363, 1698))
+tesered = np.array((123, 145, 61))
+shot_and_tesered = np.array((58, 24, 20))
+other = np.array((9, 4, 5))
+races = ['White', 'Black', 'Hispanic']
+plt.bar(races, shot, color = 'brown')
+plt.bar(races, tesered, color = 'olive', bottom = shot)
+plt.bar(races, shot_and_tesered, color = 'teal', bottom = shot + tesered)
+plt.bar(races, other, color = 'royalblue', bottom = shot + tesered + shot_and_tesered)
+
+plt.xlabel('Races')
+plt.ylabel('Quantity')
+plt.title('People killed by police in USA, between 2001 and 2016')
+plt.legend(('Shot', 'Tesered', 'Shot and Tesered'))
+
+plt.show()
+
+
+
 
 # Grupo por raça. 
 white = morte_raca[morte_raca["Race"] == "White"]
