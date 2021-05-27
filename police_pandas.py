@@ -10,12 +10,9 @@ df = pd.read_csv(r'C:\Users\Priscila\Documents\GitHub\teste\policefatal.csv')
 # Cria um Backup do Data Frame original
 df_backup = df.copy()
 # Converte em maiúscula as strings da coluna "Armed"
-df = df["Armed"].str.upper()
+df["Armed"].str.upper()
 
-print('As colunas do df são:\n',df.columns)
-print(
-    '\nEste projeto visa entender a maineira mais recorrrente de morte por raça.\n'
-)
+print('The columns of Data Frame are:\n',df.columns)
 print(
     'This dataset aims to provide insight into individuals'
     ' who were killed during alteractions with police.'
@@ -24,22 +21,39 @@ print(
     ' and if they were fleeing.'
 )
 print(
-f'A primeira ocorrência foi em {df["Date"].min()}\n'
-f'A última ocorrência foi em {df["Date"].max()}'
+f'The first occurrence was in {df["Date"].min()}\n'
+f'The last occurrence was in {df["Date"].max()}'
 )
+# Build a DataFrame with the columns "Race" and "Manner_of_death".
+deaths_race = morte_raca = df[["Race", "Manner_of_death"]]
+
+# Values aggreated by Race, Manner of death and both.
+'''É PRECISO INCLUIR os 3.965 MORTOS QUE NÃO TIVEREAM A RAÇA CLASSIFICADA'''
+        ''' Criar uma categoria RACE_WAS_NOT_DECLARED e atribuir 3965'''
+race_not_declared = int(3965)
+agg_by_race = deaths_race["Race"].value_counts()
+agg_by_kind_of_death = deaths_race["Manner_of_death"].value_counts()
+main_values_race_death = deaths_race.value_counts()
+
+# Build the first graph, people that was killed by race.
+agg_by_race.plot.bar(color="#dca800")
+plt.xticks(rotation=0)  # Way to rotate the label of x and y axis.
+plt.yticks(rotation=0)  # Way to rotate the label of x and y axis.
+plt.ylabel("Number of deaths")
+plt.title("People killed by police in USA, between 2001 and 2016")
+
+
+
+
+
+
+# Clean the NaN values in the Race column.
+morte_raca = morte_raca.dropna(subset=["Race"])
+
+
 # Limpando o df de dados que não quero usar no momento. 
 # DROP() - DELETA as colunas. "Name", "UID", "City", "Flee", "Mental_illness".
 df = df.drop(columns=["Name", "UID", "City", "Flee", "Mental_illness"])
-# Cria um DF somente com as colunas "Race" e "Manner_of_death".
-morte_raca = df[["Race", "Manner_of_death"]]
-# Faz a limpeza dos valores NaN da coluna Raça. 
-morte_raca = morte_raca.dropna(subset=["Race"])
-
-morte_raca_numeros = morte_raca.value_counts()
-morte_raca_agg_raca = morte_raca.value_counts(subset=["Race"])
-
-morte_raca_numeros.plot.barh()
-morte_raca_agg_raca.plot.barh()
 
 # White, Black, Hispanic
 shot = np.array((3665, 2363, 1698))
@@ -59,9 +73,6 @@ plt.legend(('Shot', 'Tesered', 'Shot and Tesered'))
 
 plt.show()
 
-
-
-
 # Grupo por raça. 
 white = morte_raca[morte_raca["Race"] == "White"]
 black = morte_raca[morte_raca["Race"] == "Black"]
@@ -71,13 +82,12 @@ nativo = morte_raca[morte_raca["Race"] == "Native"]
 outro = morte_raca[morte_raca["Race"] == "Other"]
 
 # Valores numéricos sobre a maneira da morte.
-morte_raca_numeros = morte_raca.value_counts()
-black_mortes = black.value_counts()
-white_mortes = white.value_counts()
-hispanic_mortes = hispanic.value_counts()
-asian_mortes = asian.value_counts()
-nativo_mortes = nativo.value_counts()
-outro_mortes = outro.value_counts()
+black_deaths = black.value_counts()
+white_deaths = white.value_counts()
+hispanic_deaths = hispanic.value_counts()
+asian_deaths = asian.value_counts()
+native_deaths = nativo.value_counts()
+other_deaths = outro.value_counts()
 
 # First Graphic - Tem que ser nessa ordem
 morte_raca_numeros.plot(color='black', kind = 'bar')    
@@ -92,15 +102,15 @@ print(df["Race"].value_counts())
 print(df["Armed"].value_counts())
 # normalize=True, retorna os dados em percentual.
 morte_raca["Race"].value_counts(normalize=True)
-# Cria data frames específicos.
-Axe = df.loc[df["Armed"] == "AXE"]
-Baseball_Bat = df.loc[df["Armed"] == "BASEBALL BAT"]
-Vehicle = df.loc[df["Armed"] == "VEHICLE"]
-Unknown_Weapon = df.loc[df["Armed"] == "UNKNOWN WEAPON"]
-Toy_Weapon = df.loc[df["Armed"] == "TOY WEAPON"]
-facas = df.loc[df["Armed"] == "KNIFE"]
-Gun = df.loc[df["Armed"] == "GUN"]
-Unarmed = df.loc[df["Armed"] == "UNARMED"]
+# Build specific data frames. 
+axe = df.loc[df["Armed"] == "AXE"]
+baseball_bat = df.loc[df["Armed"] == "BASEBALL BAT"]
+vehicle = df.loc[df["Armed"] == "VEHICLE"]
+unknown_weapon = df.loc[df["Armed"] == "UNKNOWN WEAPON"]
+toy_weapon = df.loc[df["Armed"] == "TOY WEAPON"]
+knife = df.loc[df["Armed"] == "KNIFE"]
+gun = df.loc[df["Armed"] == "GUN"]
+unarmed = df.loc[df["Armed"] == "UNARMED"]
 
 # Crianças mortas de 0 a 5 anos. 
 criancas_0_ate_5 = df[df["Age"]<= 5]
